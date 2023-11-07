@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+% Theorem Styles
+\newtheorem*{theorem}{Theorem}
+\begin{document}
+\begin{theorem}[Glivenko-Cantelli]
+Let \( F_n \) be the empirical distribution function of a sample of size \( n \),
+ for \((X_i)_{i\ge1} \in \mathbf{R}\) i.i.d random variables with distribution function \(F\). Then
+
+\[ \lim_{n \to \infty} \sup_{x \in \mathbf{R}} |F_n(x) - F(x)| = 0 \quad \text{a.s.} \]
+\end{theorem}
+\begin{proof} 
+Let \(t_1,\ldots,t_k \in \mathbf{R}\). Then since \(\forall j\le k \quad (\mathbf{1}_{(-\infty,t_j]}(X_i ))_{i\ge1}\) are also i.i.d random variables.
+By the strong law of large numbers we know that 
+\begin{equation}
+    \label{eq1}
+    \forall j \le k: \quad |F_n(t_j)-F(t_j)| \to 0 \quad (a.s.).
+\end{equation}
+So for every \(j\le k\) we have a set \(A_j \in \Omega\) with \(\mathbf{P}(A_j) = 1\) such that \eqref{eq1} holds.
+Clearly \(\mathbf{P}(\bigcap_{j\le k}A_j) = 1\), so (by choosing the largest \(N_j\) in the definition of the limits) we have:
+\begin{equation}
+    \label{eq2}
+    \max_{j= 1,\ldots,k} |F_n(t_j)-F(t_j)| \to 0 \quad (a.s.).
+\end{equation}
+Now, let \(h \nearrow t_j\). Then
+\begin{align*}
+    F_n(t_j^-) & = \lim_{h\nearrow t_j} \frac{1}{n} \sum_{i = 1,\ldots,n} \mathbf{1}_{(-\infty,h]}(X_i)\\
+    & = \frac{1}{n} \sum_{i = 1,\ldots,n} \mathbf{1}_{(-\infty,t_j)}(X_i)\\
+\end{align*}
+Because \((\mathbf{1}_{(-\infty,t_j)}(X_i))_{i\ge 1}\) are i.i.d random variables (with finite expectation), the strong law of large numbers gives us:
+\begin{equation*}
+    |F_n(t_j^-) - F(t_j^-))| = |F_n(t_j^-) - \mathbf{P}(X_m \in (-\infty,t_j))| \to 0 \quad(a.s.).
+\end{equation*}
+Using the same argument as before we can now conclude:
+\begin{equation}
+    \label{eq3}
+    \max_{j= 1,\ldots,k} |F_n(t_j^-)-F(t_j^-)| \to 0 \quad (a.s.).
+\end{equation}
+Continuing, fix any \(\varepsilon>0\) and choose \(t_j = \inf\{t \in \mathbf{R} : F(t) \ge j\varepsilon\}\) for \(i= 1,\ldots, \left\lfloor \frac{1}{\varepsilon} \right\rfloor \). (Note that \(t_0 = -\infty\)).
+Then \(\forall t \in \mathbf{R}\) there is a \(j \in \mathbf{N}\) with \(t \in (t_{j-1},t_{j})\) since \(F\) is a cdf and \(j\varepsilon \le 1\).
+Now we estimate using \(t < t_i\) and \(t> t_{i-1}\):
+\begin{align*}
+    F_n(t)-F(t) &\le F_n(t_j^-) -F(t_{j-1}) \\
+                &\le (F_n(t_j^-) -F(t_j^-)) +(F(t_j^-)- F_n(t_{j-1})) +(F_n(t_{j-1})-F(t_{j-1}) ) \\
+                &\le \max_{j=1,\ldots,k}|F_n(t_j^-) -F(t_j^-)| +(F(t_j^-)- F_n(t_{j-1})) + \max_{j=1,\ldots,k}|F_n(t_j)-F(t_j)|\\
+                &\le \max_{j=1,\ldots,k}|F_n(t_j^-) -F(t_j^-)| +j\varepsilon- F_n(t_{j-1}) + \max_{j=1,\ldots,k}|F_n(t_j)-F(t_j)|\\
+\end{align*} 
+By \eqref{eq1} we have for all \(n \ge N(\varepsilon)\), that \(F(t_{j-1})-F_n(t_{j-1}) \le \varepsilon \iff -F_n(t_{j-1}) \le \varepsilon-F(t_{j-1}) \le \varepsilon - (j-1)\varepsilon  \), almost surely.
+We conclude, that 
+\[ 
+    F_n(t)-F(t) \le \max_{j=1,\ldots,k}|F_n(t_j^-) -F(t_j^-)| +2\varepsilon + \max_{j=1,\ldots,k}|F_n(t_j)-F(t_j)| \quad (a.s.).
+\]
+A completely symmetrical argument then shows: 
+\begin{equation}
+    \label{eq4}
+    |F_n(t)-F(t)| \le \max_{j=1,\ldots,k}|F_n(t_j^-) -F(t_j^-)| +2\varepsilon + \max_{j=1,\ldots,k}|F_n(t_j)-F(t_j)| \quad (a.s.).
+\end{equation}
+Note that the choice of the numbers \(t_j\) only depends on \(\varepsilon\).
+Therefore for \(\varepsilon > 0\) \eqref{eq4} implies 
+\[
+    \sup_{t\in \mathbf{R}}|F_n(t)-F(t)| \le \max_{j=1,\ldots,k}|F_n(t_j^-) -F(t_j^-)| +2\varepsilon + \max_{j=1,\ldots,k}|F_n(t_j)-F(t_j)| \quad (a.s.).
+\]
+For N large enough. Combining this with \eqref{eq2} and \eqref{eq3} and choosing \(N_1 \ge N\) large enough (also greater than the N necessary in \eqref{eq2} and \eqref{eq3}), yields:
+\[ 
+    \sup_{t\in \mathbf{R}}|F_n(t)-F(t)| \le \varepsilon  +2\varepsilon + \varepsilon  \text{ for } n \ge N_1 \quad (a.s.).
+    \]
+    Therefore we also have
+    \[ 
+        \limsup_{n\to \infty}\sup_{t\in \mathbf{R}}|F_n(t)-F(t)| \le +5\varepsilon  \quad (a.s.).
+    \]
+    Because \(\varepsilon > 0 \)  was arbitrary, we conclude
+    \[
+    0 \le \liminf_{n\to \infty}\sup_{t\in \mathbf{R}}|F_n(t)-F(t)| \le \limsup_{n\to \infty}\sup_{t\in \mathbf{R}}|F_n(t)-F(t)|=0  \quad (a.s.),
+    \]
+    which yields the claim.
+\end{proof}
+
+
+\end{document}
+
+
